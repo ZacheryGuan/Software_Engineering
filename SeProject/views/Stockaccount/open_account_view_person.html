@@ -170,16 +170,16 @@
 		
 		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="index.html"><i class="fa-home"></i>主界面</a>
+				<a href="index.php/Mainwindow/Mainwindow/index"><i class="fa-home"></i>主界面</a>
 			</li>
 
 			<li>
 
-				<a href="forms-main.html">证券账户管理</a>
+				<a href="index.php/Stockaccount/Stockaccount/indexPerson">证券账户管理</a>
 			</li>
 			<li>
 
-				<a href="forms-main.html">用户开户</a>
+				<a href="index.php/Stockaccount/Stockaccount/indexPerson">用户开户</a>
 			</li>
 			<li class="active">
 
@@ -249,17 +249,24 @@
 								</div>
 								<?php echo form_error('userName');?>
 								<br /><br /><br />
-							
-								<label for="field-5" class="col-sm-4 control-label">本人性别</label>
+								
+								
+								
+
+								<label class="col-sm-4 control-label">本人性别</label>
 								
 								<div class="col-sm-4">
-									<select class="form-control" type="input" name="userGender" value="<?php echo set_value('userGender'); ?>" id="field-5">
-										<option value="male">男</option>
-										<option value="female">女</option>	
-									</select>
 									
+									<select name="userGender" class="selectboxit visible" style="display: none;" value="<?php echo set_value('userGender'); ?>">
+										<optgroup label="本人性别">
+											<option value="person">男</option>
+											<option value="legalman">女</option>
+										</optgroup>
+									</select><span id="" class="selectboxit-container selectboxit-container" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false" aria-owns=""></span>
 								</div>
 								<br /><br /><br />
+
+
 							
 								<label for="field-6" class="col-sm-4 control-label">本人身份证号码</label>
 								
@@ -285,7 +292,7 @@
 								<?php echo form_error('perOccupation');?>
 								<br /><br /><br />
 								
-								<label for="field-9" class="col-sm-4 control-label">本人学历</label>
+								<!-- <label for="field-9" class="col-sm-4 control-label">本人学历</label>
 								
 								<div class="col-sm-4">
 									<select class="form-control" type="input" name="perEducation" value="<?php echo set_value('perEducation'); ?>"id="field-9">
@@ -296,8 +303,25 @@
 										<option value="others">其他</option>
 									</select>
 									
+								</div> -->
+								
+					
+								<label class="col-sm-4 control-label">本人学历</label>
+								
+								<div class="col-sm-4">
+									
+									<select name="perEducation" class="selectboxit visible" value="<?php echo set_value('perEducation'); ?>" style="display: none;">
+										<optgroup label="本人学历">
+											<option value="phd">博士</option>
+											<option value="master">硕士</option>
+											<option value="undergraduate">本科</option>
+											<option value="professional">专科</option>
+											<option value="others">其他</option>
+										</optgroup>
+									</select><span id="" class="selectboxit-container selectboxit-container" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false" aria-owns=""></span>	
 								</div>
 								<br /><br /><br />
+								
 								<label for="field-10" class="col-sm-4 control-label">本人工作单位</label>
 								
 								<div class="col-sm-4">
@@ -351,8 +375,11 @@
 </div>
 
 	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="assets/js/select2/select2.css">
+	<link rel="stylesheet" href="assets/js/selectboxit/jquery.selectBoxIt.css">
 	<link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
 	<link rel="stylesheet" href="assets/js/rickshaw/rickshaw.min.css">
+	<link rel="stylesheet" href="assets/js/daterangepicker/daterangepicker-bs3.css">
 
 	<!-- Bottom scripts (common) -->
 	<script src="assets/js/gsap/main-gsap.js"></script>

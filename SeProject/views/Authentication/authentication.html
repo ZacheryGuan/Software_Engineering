@@ -160,12 +160,12 @@
 		
  		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="index.html"><i class="fa-home"></i>主界面</a>
+				<a href="index.php/Mainwindow/Mainwindow/index"><i class="fa-home"></i>主界面</a>
 			</li>
 
 			<li>
 
-				<a href="forms-main.html">交易信息查询</a>
+				<a href="index.php/Authentication/Authentication/auth_start">交易信息查询</a>
 			</li>
 			<li class="active">
 
@@ -190,12 +190,12 @@
 						</div> -->
 						<div id="warning" style="display: none">
 							<div class="col-sm-4"></div>
-							<div style="font-color: red"> 用户名或密码错误，该用户已尝试<?php echo $auth_cnt; ?>次</div>
+							<div style="color: red"> 用户名或密码错误，该用户已尝试<?php echo $auth_cnt; ?>次</div>
 						</div>
 						
 						<div id="locked" style="display: none">
 							<div class="col-sm-4"></div>
-							<div style="color: red"> 用户名或密码错误，该账户已被锁定。请<a href="" style="color: blue; text-decoration:underline">恢复账户</a></div>
+							<div style="color: red"> 用户名或密码错误，该账户已被锁定。请<a href="index.php/Stockaccount/Stockaccount/unlock_index" style="color: blue; text-decoration:underline">恢复账户</a></div>
 						</div>
 						
 						<div id="nouser" style="display: none">

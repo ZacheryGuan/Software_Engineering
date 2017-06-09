@@ -14,6 +14,8 @@ class Authentication_model extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+		$this->load->library('session');
+		$this->load->library('encryption');
     }
 
     /**
@@ -26,10 +28,15 @@ class Authentication_model extends CI_Model
     public function validate($username, $password)
     {
         $sql = "SELECT * FROM PerStockAccount WHERE accountId=?";
-
         $query = $this->db->query($sql, array($username));
         $row = $query->row();
-
+		
+		/* echo "db_pw: ", $row->accPassword, '<br/>';
+		echo "db_depw: ", bin2hex($this->encryption->decrypt($row->accPassword)), '<br />';
+		echo "ipt_pw: ", bin2hex($password), '<br />';
+		echo "crpw: ", $this->encryption->encrypt($password), '<br />';
+		return "none"; */
+		
         /*
          * 对明文密码进行加密，然后与数据库中的密码进行对比
          * 若两者匹配，则返回true，表示登陆密码正确
@@ -37,13 +44,16 @@ class Authentication_model extends CI_Model
 		if (!isset($row)) {
 			return "none";
 		}
-        if (isset($row) && ($row->statOfAccount == "normal") && (/*crypt*/($password/*, $this->salt*/) == $row->accPassword)) {
-			
+		//echo "read:$password";
+		//echo "--hhh---";
+		//echo $this->encryption->decrypt($row->accPassword);
+        //if (isset($row) && ($row->statOfAccount == "normal") && ($password == $this->encryption->decrypt($row->accPassword))) {
+		if (isset($row) && ($row->statOfAccount == "normal") && (bin2hex($password) == bin2hex($this->encryption->decrypt($row->accPassword)))) {
 			/* save session of current user */
-			$newdata = array(
-				'username'  => $username
-			);
+			$_SESSION['username']=$username;
 			$this->session->set_userdata($newdata);
+			$_GET['loggin_un']=$username;
+			//echo 'model_sid: ', session_id(), '<br/>';
 			//echo newdata;
             return "true";
         } else {
@@ -103,5 +113,25 @@ class Authentication_model extends CI_Model
 		$sql = "UPDATE PerStockAccount SET loginErrorTimes=?, statOfAccount=? Where accountId=?";
 		$query = $this->db->query($sql, array(0, "normal", $username));		
 	}
-
+	
+	/**
+     * @param $username
+     * 插入用户时间戳
+     */
+	public function insert_timestamp($id, $timestamp, $sid) {
+		$sql = "SELECT * FROM UserAuth WHERE id=?";
+		$query = $this->db->query($sql, array($id));
+		$row = $query->row();
+		if(isset($row)) {
+			$sql = "UPDATE UserAuth SET sid=?, timestamp=? where id=?";
+			$query = $this->db->query($sql, array($sid, $timestamp, $id));	
+		} else {
+			$datasent=array(
+                'id'=>$id,
+                'timestamp'=>$timestamp,
+                'sid'=>$sid,
+                );  	
+			$this->db->insert('UserAuth',$datasent);
+		}
+	}
 }

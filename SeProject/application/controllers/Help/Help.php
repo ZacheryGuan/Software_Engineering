@@ -23,5 +23,4 @@ class Help extends CI_Controller
 	{
 		$this->load->view("Help/help.html");
 	}
-
 }

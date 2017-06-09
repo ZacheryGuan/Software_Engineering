@@ -37,11 +37,7 @@ class Stockaccount_model extends CI_Model {
        }
        else
          return false;
-    }
-
-   
-
-    
+    }    
     
 	
 	public function report_loss($typeOfAccount, $idNumber)
@@ -161,8 +157,8 @@ class Stockaccount_model extends CI_Model {
 	
 	public function change_password($username, $newpassword)
 	{
-		$sql = "UPDATE PerStockAccount SET accPassword=? Where accountId=?";
-		$query = $this->db->query($sql, array($newpassword, $username));
+		$sql = "UPDATE PerStockAccount SET accPassword=?, statOfAccount=?, loginErrorTimes=? Where accountId=?";
+		$query = $this->db->query($sql, array($newpassword, "normal", 0, $username));
 	}
 
     public function crypt($str,$salt=null)

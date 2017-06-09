@@ -7,6 +7,7 @@ class Stockaccount extends CI_Controller {
 
         $this->load->model('Stockaccount/stockaccount_model');
         $this->load->helper('url_helper');
+		$this->load->library('encryption');
     }
 
     public function idnumber_check($str)
@@ -69,7 +70,7 @@ class Stockaccount extends CI_Controller {
             //如果提交了
             $datasent=array(
                 'accountId'=>$this->input->post('accountId'),
-                'accPassword'=>$this->input->post('accPassword'),
+                'accPassword'=>$this->encryption->encrypt($this->input->post('accPassword')),
                 'rgstDate'=>$this->input->post('rgstDate'),
                 'userName'=>$this->input->post('userName'),
                 'userGender'=>$this->input->post('userGender'),
@@ -79,7 +80,10 @@ class Stockaccount extends CI_Controller {
                 'perEducation'=>$this->input->post('perEducation'),
                 'workPlace'=>$this->input->post('workPlace'),
                 'phoneNumber'=>$this->input->post('phoneNumber'),
-                'subsIdNumber'=>$this->input->post('subsIdNumber')
+                'subsIdNumber'=>$this->input->post('subsIdNumber'),
+				'statOfAccount'=>"normal",
+				'loginErrorTimes'=>0
+				
                 );
             
             if($this->stockaccount_model->open_account($datasent)== TRUE)
@@ -128,7 +132,7 @@ class Stockaccount extends CI_Controller {
             //如果提交了
             $datasent=array(
                 'accountId'=>$this->input->post('accountId'),
-                'accPassword'=>$this->input->post('accPassword'),
+                'accPassword'=>$this->encryption->encrypt($this->input->post('accPassword')),
                 'rgstDate'=>$this->input->post('rgstDate'),
                 'rgstNumber'=>$this->input->post('rgstNumber'),
                 'bLisnNumber'=>$this->input->post('bLisnNumber'),
@@ -139,7 +143,9 @@ class Stockaccount extends CI_Controller {
                 'authName'=>$this->input->post('authName'),
                 'authIdNumber'=>$this->input->post('authIdNumber'),
                 'authPhoneNumber'=>$this->input->post('authPhoneNumber'),
-                'authhouAddress'=>$this->input->post('authhouAddress')
+                'authhouAddress'=>$this->input->post('authhouAddress'),
+				'statOfAccount'=>"normal",
+				'loginErrorTimes'=>0
                 );  
             if($this->stockaccount_model->open_account($datasent) == TRUE)
             {
@@ -261,10 +267,11 @@ class Stockaccount extends CI_Controller {
 		$data['confirmpassword'] = $this->input->post("confirmpassword");
 		
 		$resp['submitted_data'] = $_POST; 
-		
 		$data['status'] = $this->stockaccount_model->lock_validate($data['idNumber'], $data['username'], $data['newpassword'], $data['confirmpassword']);
-		
+		$data['newpassword'] = $this->encryption->encrypt($data['newpassword']);
+		$data['confirmpassword'] = $this->encryption->encrypt($data['confirmpassword']);
 		$this->load->view('Stockaccount/unlock.html', $data);
+		
 		
 		if($data['status'] == "Match") {
 			$this->stockaccount_model->change_password($data['username'], $data['newpassword']);
