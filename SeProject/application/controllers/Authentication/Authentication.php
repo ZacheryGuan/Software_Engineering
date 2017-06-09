@@ -1,17 +1,7 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: BoYiLi
- * Date: 17/5/12
- * Time: 上午09:26
- */
 class Authentication extends CI_Controller
-{
-    /**
-     * Home constructor.
-     */
-	
+{	
 	/* calculate the try times */
 	private $auth_cnt = 0;
 	private $last_usrName = "";
@@ -36,16 +26,16 @@ class Authentication extends CI_Controller
 	{
 		$resp = array();
 
-        $username = $this->input->post("username");
-        $password = $this->input->post("password");
+	    $username = $this->input->post("username");
+	    $password = $this->input->post("password");
 		
 		$resp['submitted_data'] = $_POST; 
 
-        $auth_status = 'invalid';
+	    $auth_status = 'invalid';
 
-        if (($status=$this->authentication_model->validate($username, $password))=="true") {
-            $auth_status = 'success';
-        }
+	    if (($status=$this->authentication_model->validate($username, $password))=="true") {
+	        $auth_status = 'success';
+	    }
 		else if($status=="locked"){
 			$data['locked'] = "true";
 			$data['auth_cnt'] = 5;
@@ -59,15 +49,15 @@ class Authentication extends CI_Controller
 			return;
 		}
 		
-        $resp['auth_status'] = $auth_status;
+	    $resp['auth_status'] = $auth_status;
 
-        if ($auth_status == 'success') {
-            //$username_crypted = $this->authentication_model->crypt($username);
+	    if ($auth_status == 'success') {
+	        //$username_crypted = $this->authentication_model->crypt($username);
 			$_SESSION['username']=$username;
 			$sessionID=session_id();
 			//redirect("/Searchmessage/Searchmessage/index/$sessionID");
 			redirect("/Searchmessage/Searchmessage/index/$username");
-        }
+	    }
 		else
 		{
 			$times = $this->authentication_model->get_error_times($username);
@@ -89,7 +79,6 @@ class Authentication extends CI_Controller
 		$this->last_usrName = $username;
 		//echo json_encode($resp);
 	}
-
 	
 	public function log_out()
 	{
